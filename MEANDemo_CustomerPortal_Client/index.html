@@ -1,0 +1,84 @@
+  <html ng-app="customerPortalApp">
+  <head>
+    <title>Sonic Customer Portal</title>
+    <script type="text/javascript" src="./public/js/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./public/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <h1>Sonic Customer Portal v1</h1>
+    <h4>Welcome to the Customer Portal</h4>
+    <br/>
+    <p>This page (index.html) is the first version of how an angular app can be written using a single HTML. The controller/factory has been included as part of the script tag and an additional JS is not required.<br/>
+    A new version of this will be built, indexv2.html, that will have better code readability by breaking them into multiple controllers as well as directives.</p><br/>
+
+    <!-- Tabs Go Here -->
+    <section ng-init="tab=1">
+      <ul class="nav nav-pills">
+        <li ng-class="{active:tab === 1}">
+          <a href ng-click="tab=1">Add a Customer</a>
+        </li>
+        <li ng-class="{active:tab === 2}">
+          <a href ng-click="tab=2">List Customers</a>
+        </li>
+        <li ng-class="{active:tab === 3}">
+          <a href ng-click="tab=3">Show Customer Details</a>
+        </li>
+        <li ng-class="{active:tab === 4}">
+          <a href ng-click="tab=4">Delete a Customer</a>
+        </li>
+        <li ng-class="{active:tab === 5}">
+          <a href ng-click="tab=5">Update a Customer</a>
+        </li>
+      </ul>
+      
+      <!-- Panels go here -->
+      <div class="panel" ng-show="tab === 1">
+          <h4>Enter the form fields to Add a Customer</h4>
+      </div>
+      <div class="panel" ng-show="tab === 2">
+          <h4>Here is the listing of all the customers</h4>
+          <div ng-controller="customerController">
+              <ul>
+                  <li ng-repeat="customer in customers">{{customer.firstName}} {{customer.lastName}}</li>
+              </ul>
+          </div>
+      </div>
+      <div class="panel" ng-show="tab === 3">
+          <h4>Enter the customer username to find out more details</h4>
+      </div>
+       <div class="panel" ng-show="tab === 4">
+          <h4>Enter the customer username to delete the customer</h4>
+      </div>
+      <div class="panel" ng-show="tab === 5">
+          <h4>Search the customer by username and then edit the details and update</h4>      
+      </div>
+    </section>
+
+    <script>
+      var app = angular.module('customerPortalApp', []);
+
+      app.factory('customerFactory', ['$http', function($http) {
+        var urlBase = 'http://localhost:3000/api/customers';
+        
+          var factory = {};
+          factory.getCustomers = function() {
+            /*
+            var customers = [
+              {firstName : "John", lastName : "Doe"},
+              {firstName : "John", lastName : "Smith"}
+            ];*/
+            return $http.get(urlBase);
+          };
+
+          return factory;
+      }]);
+
+      app.controller('customerController', function($scope, customerFactory){
+        customerFactory.getCustomers().success(function(response){
+          $scope.customers = response;
+        });
+      });
+      </script>
+
+  </body> 
+</html>
