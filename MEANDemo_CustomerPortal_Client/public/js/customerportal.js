@@ -1,7 +1,7 @@
 var app = angular.module('customerPortalApp', []);
 
 app.factory('customerFactory', ['$http', function($http) {
-	var urlBase = 'http://localhost:3000/api/customers/';
+	var urlBase = 'http://localhost:3000/api/customers';
 	
   	var factory = {};
   	factory.getCustomers = function() {
@@ -11,15 +11,6 @@ app.factory('customerFactory', ['$http', function($http) {
 	  		{firstName : "John", lastName : "Smith"}
 	  	];*/
   		return $http.get(urlBase);
-  	};
-
-  	factory.getCustomer = function(username) {
-  		/*
-  		var customers = [
-	  		{firstName : "John", lastName : "Doe"},
-	  		{firstName : "John", lastName : "Smith"}
-	  	];*/
-  		return $http.get(urlBase + username);
   	};
 
   	return factory;
@@ -40,12 +31,32 @@ app.controller('panelController', function(){
 	};
 });
 
-app.controller('formController', function($scope, customerFactory){
+// This controller is used to get the customer details.
+app.controller('showController', ['$http', '$scope', function($http, $scope) {
+	this.username = "e.g. rocky";
+	$scope.userFound = false;
+	var urlBase = 'http://localhost:3000/api/customers';
 
-	this.findCustomer = function() {
-		customerFactory.getCustomer(this.username).success(function(response) {
-			$scope.customer = response;
-			$scope.customerFound = true;
+	this.getDetails = function() {
+		var getDetailsUrl = urlBase + "/" + this.username;
+		//alert(getDetailsUrl);
+		$http.get(getDetailsUrl).then(function(response) {
+			//$scope.users = response.data;
+			var statusCode = response.data.statusCode;
+			var statusDescription = response.data.statusDescription;
+		
+			// If customer is not found, statusCode=1000
+			if (statusCode==1000) {
+				$scope.status = statusDescription;
+				$scope.userFound = false;
+			} else {
+				$scope.user = response.data[0];
+				$scope.userFound = true;
+			}
+		}, function(response) {
+			// Error in returning response
+			$scope.userFound = false;
+			$scope.status = "Error in API";
 		});
 	};
-});
+}]);

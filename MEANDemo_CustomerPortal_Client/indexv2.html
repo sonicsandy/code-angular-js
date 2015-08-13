@@ -9,7 +9,7 @@
   <body ng-controller="customerController as customer">
     <header>
       <h1 class="text-center">Sonic Customer Portal v2</h1>
-      <h3 class="text-center">Welcome to the Customer Portal</h3>
+      <h2 class="text-center">Welcome to the Customer Portal</h2>
     </header>
     <br/>
     <p class="text-center">This page (indexv2.html) is the second version of how an angular app can be written in a modular way using controllers.<br/>
@@ -39,39 +39,43 @@
         
         <!-- Panels go here -->
         <div class="panel" ng-show="panel.isTabSelected(1)">
-            <br/>
             <h4>Enter the form fields to Add a Customer</h4>
-            INPROGRESS
         </div>
         <div class="panel" ng-show="panel.isTabSelected(2)">
             <h4>Here is the listing of all the customers</h4>
             <div>
                 <ul>
-                    <li ng-repeat="customer in customers">{{customer.firstName}} {{customer.lastName}} ({{customer.username}})</li>
+                    <li ng-repeat="customer in customers">{{customer.firstName}} {{customer.lastName}}</li>
                 </ul>
+                <input type="submit" value="Refresh"/>
             </div>
         </div>
-        <div class="panel" ng-show="panel.isTabSelected(3)" ng-controller="formController as form">
-          <br/>
-          <h4>Enter the customer username to find out more details</h4>
-          <form name="addCustomerForm">
-            <fieldset class="form-group">
-              <input ng-model="form.username" class="form-control" placeholder="e.g. johndoe007" title="Username" />
-            </fieldset>
-            <fieldset class="form-group">
-                <button ng-click="form.findCustomer()" class="btn btn-primary pull-left">Find Customer</button>
-            </fieldset>
-          </form>
-          <div ng-show="customerFound">
-            <h5>Found the customer with username: {{form.username}}</h5>
-            Name:       <b>{{customer[0].firstName}} {{customer[0].lastName}}</b><br/>
-            Age:        <b>{{customer[0].age}}</b><br/>
-            Sex:        <b>{{customer[0].sex}}</b><br/>
-            Profession: <b>{{customer[0].profession}}</b><br/>
-            DOB:        <b>{{customer[0].dob}}</b><br/>
-            Created On: <b>{{customer[0].create_date}}</b><br/>
-          </div>
+        <div class="panel" ng-show="panel.isTabSelected(3)" ng-controller="showController as showCtrl">
+            <h4>Enter the customer username to find out more details:</h4>
+            <form name="showCustomerForm" ng-submit="showCtrl.getDetails()">
+              <input ng-model="showCtrl.username" ng-focus="showCtrl.username=''" type="text" name="username" />
+              <input type="submit" value="Show Details"/>
+            </form>
+            <br/>
+            <div ng-show="userFound">
+              Name: {{user.firstName}} {{user.lastName}}<br/>
+              Age: {{user.age}}<br/>
+              Sex: {{user.sex}}<br/>
+              Profession: {{user.profession}}<br/>
+              DOB: {{user.dob | date:'MM/dd/yyyy'}}<br/>
+            </div>
+            <div ng-show="!userFound">
+              {{status}}
+            </div>        
         </div>
+        <!-- Another way of submission -->
+        <!-- 
+        <div class="panel" ng-show="panel.isTabSelected(3)" ng-controller="showController as showCtrl">
+            <h4>Enter the customer username to find out more details:</h4>
+            <input ng-model="showCtrl.username" type="text" name="username" />        
+            <button ng-click="showCtrl.getDetails()">greet</button>
+        </div> 
+        -->
          <div class="panel" ng-show="panel.isTabSelected(4)">
             <h4>Enter the customer username to delete the customer</h4>
         </div>
