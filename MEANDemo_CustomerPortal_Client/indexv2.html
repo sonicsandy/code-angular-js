@@ -76,12 +76,20 @@
             <button ng-click="showCtrl.getDetails()">greet</button>
         </div> 
         -->
-         <div class="panel" ng-show="panel.isTabSelected(4)">
+         <div class="panel" ng-show="panel.isTabSelected(4)" ng-controller="deleteController as deleteCtrl">
             <h4>Enter the customer username to delete the customer</h4>
+            <form name="deleteCustomerForm" ng-submit="deleteCtrl.deleteUser()">
+              <input ng-model="deleteCtrl.username" ng-focus="deleteCtrl.username=''" type="text" name="username" />
+              <input type="submit" value="Delete Customer"/>
+            </form>
+            <br/>
+            {{status}}
         </div>
+        <!--
         <div class="panel" ng-show="panel.isTabSelected(5)">
             <h4>Search the customer by username and then edit the details and update</h4>      
         </div>
+        -->
       </section>
     </div>
   </body> 

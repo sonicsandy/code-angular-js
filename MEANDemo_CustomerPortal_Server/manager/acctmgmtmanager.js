@@ -92,6 +92,7 @@ var listCustomers = function(request, response) {
 
 /* Show details for a customer method that is invoked upon request */
 var showCustomer = function(request, response) {
+	//console.log(request.method);
 	var usernameReq = request.params.username
 	console.log("Show details for the customer: " + usernameReq);
 	// Query the DB for a specific customer
@@ -158,6 +159,7 @@ var showCustomer = function(request, response) {
 
 /* Delete a customer method that is invoked upon request */
 var deleteCustomer = function(request, response) {
+	//console.log(request.method);
 	var usernameReq = request.params.username
 	console.log("Delete the customer: " + usernameReq);
 	// Query the DB for a specific customer

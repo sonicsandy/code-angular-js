@@ -30,6 +30,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Customized the downloaded code for solving Delete to Options method conversion problem
+app.all('/api/customers/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "DELETE");
+  next();
+});
+
+/* Downloaded from internet for solving Delete to Options method conversion problem.
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers",
+      "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+*/
+
 // Map the base request uri to routes for the application
 app.use('/api/customers', customers);
 
